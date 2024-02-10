@@ -10,7 +10,7 @@
 #include <ctime>
 #include <memory>
 
-#if (defined(__unix__) || defined(__APPLE__))
+#if (defined(__unix__) || defined(__APPLE__) || defined(__VITA__))
 #include <dirent.h>
 #endif
 

@@ -382,13 +382,13 @@ void Particle::purge(ParticleProcess* proc){
 	Protected = 0;
 	if(!Value){
 		if(*BackGround){
-			int _X = X<<PARTICLE_SHIFT;
-			int _Y = Y<<PARTICLE_SHIFT;
+			int _x = X<<PARTICLE_SHIFT;
+			int _y = Y<<PARTICLE_SHIFT;
 
 		
 			for(int j = 0; j < PARTICLE_SIZE; j++)
-				if (vMap -> lineT[YCYCL(_Y + j)])
-					memcpy(vMap -> lineTcolor[YCYCL(_Y + j)] + _X,BackGround + (j<<2),PARTICLE_SIZE);
+				if (vMap -> lineT[YCYCL(_y + j)])
+					memcpy(vMap -> lineTcolor[YCYCL(_y + j)] + _x,BackGround + (j<<2),PARTICLE_SIZE);
 
 			*BackGround = 0;
 		}
@@ -420,14 +420,14 @@ void Particle::express(ParticleProcess* proc){
 	};
 
 	int val = Value;
-	int _X = X<<PARTICLE_SHIFT;
-	int _Y = YCYCL(Y<<PARTICLE_SHIFT);
+	int _x = X<<PARTICLE_SHIFT;
+	int _y = YCYCL(Y<<PARTICLE_SHIFT);
 	int i;
 
 	for(i = 0; i < 4; i++)
-		if (!lt[YCYCL(_Y + i)]) return;
+		if (!lt[YCYCL(_y + i)]) return;
 	
-	unsigned char fl = *(lt[_Y ] + H_SIZE + _X);
+	unsigned char fl = *(lt[_y ] + H_SIZE + _x);
 	if(fl & DOUBLE_LEVEL)
 		if(!Level)
 			return;
@@ -447,7 +447,7 @@ void Particle::express(ParticleProcess* proc){
 		val1 = (val + l + lu + u) >> 2;
 		unsigned char* mm,*mm1;
 		
-		mm = ltc[_Y] + _X;
+		mm = ltc[_y] + _x;
 
 		if ( val1){
 			*mm++ = *(ParticlePaletteTable + ((val1 + RND(noise)) << 8) + *Ground++);
@@ -468,8 +468,8 @@ void Particle::express(ParticleProcess* proc){
 		} else
 			mm++;
 
-		mm = ltc[YCYCL(_Y + 1)] + _X;
-		mm1 = ltc[YCYCL(_Y + 2)] + _X;
+		mm = ltc[YCYCL(_y + 1)] + _x;
+		mm1 = ltc[YCYCL(_y + 2)] + _x;
 
 		val1 = (val + l) >> 1;
 
@@ -501,7 +501,7 @@ void Particle::express(ParticleProcess* proc){
 			mm1++;
 		}
 
-		mm = ltc[YCYCL(_Y + 3)] + _X;
+		mm = ltc[YCYCL(_y + 3)] + _x;
 		val1 = (val + l + ld + d) >> 2;
 
 		Ground += 4;
@@ -560,12 +560,12 @@ void Particle::BackRestore(void){
 	int y;
 
 	if (*BackGround){
-		int _X = X<<PARTICLE_SHIFT;
-		int _Y = Y<<PARTICLE_SHIFT;
+		int _x = X<<PARTICLE_SHIFT;
+		int _y = Y<<PARTICLE_SHIFT;
 		for(int j = 0;j < PARTICLE_SIZE;j++){
-			y = YCYCL(_Y + j);
+			y = YCYCL(_y + j);
 			if( lt[y] )
-				memcpy(ltc[y] + _X,BackGround + (j<<2),PARTICLE_SIZE);
+				memcpy(ltc[y] + _x,BackGround + (j<<2),PARTICLE_SIZE);
 		}
 	}
 }
@@ -577,13 +577,13 @@ void Particle::GetBackGround(void){
 
 	memset(BackGround, 0, 2<<PARTICLE_SHIFT);
 
-	int _X = X<<PARTICLE_SHIFT;
-	int _Y = Y<<PARTICLE_SHIFT;
+	int _x = X<<PARTICLE_SHIFT;
+	int _y = Y<<PARTICLE_SHIFT;
 
 	for(int j = 0;j < PARTICLE_SIZE;j++){
-		y = YCYCL(_Y + j);
+		y = YCYCL(_y + j);
 		if( lt[y] )
-			memcpy(BackGround+(j<<2),ltc[y] + _X,PARTICLE_SIZE);
+			memcpy(BackGround+(j<<2),ltc[y] + _x,PARTICLE_SIZE);
 	}
 }
 

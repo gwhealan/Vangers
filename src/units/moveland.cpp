@@ -9,7 +9,7 @@
 #include "../sqexp.h"
 #include "../backg.h"
 
-#if !(defined(__unix__) || defined(__APPLE__))
+#if !(defined(__unix__) || defined(__APPLE__) || defined(__VITA__))
 static WIN32_FIND_DATA FFdata;
 static HANDLE FFh;
 char* win32_findnext(void)
@@ -690,7 +690,7 @@ void MLload(void)
 	};
 #endif
 MLTableSize = 0;
-#if !(defined(__unix__) || defined(__APPLE__))
+#if !(defined(__unix__) || defined(__APPLE__) || defined(__VITA__))
 	buf.init();
 	buf < "data.vot/*.vot";
 	char* fn = win32_findfirst(GetTargetName(buf.GetBuf()));
@@ -719,14 +719,14 @@ MLTableSize = 0;
 #endif
 	
 #ifdef _ROAD_
-#if !(defined(__unix__) || defined(__APPLE__))
+#if !(defined(__unix__) || defined(__APPLE__) || defined(__VITA__))
 	MLTableSize -= NumSkipLocation[CurrentWorld] - RealNumLocation[CurrentWorld];
 #endif
 #endif
 	
 	MLTable = new MobileLocation*[MLTableSize];
 	i = 0;
-#if !(defined(__unix__) || defined(__APPLE__))
+#if !(defined(__unix__) || defined(__APPLE__) || defined(__VITA__))
 	fn = win32_findfirst(GetTargetName(buf.GetBuf()));
 	while(fn){
 		t = 1;

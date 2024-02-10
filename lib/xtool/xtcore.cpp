@@ -124,6 +124,7 @@ int main(int argc, char *argv[])
 		putenv("SDL_AUDIODRIVER=DirectSound");
 	#endif
 
+#ifndef __VITA__
     for (int i = 1; i < argc; i++) {
         std::string cmd_key = argv[i];
         if (cmd_key == "-fullscreen") {
@@ -164,6 +165,13 @@ int main(int argc, char *argv[])
             std::cout << "Unknown parameter: '" << cmd_key << "'" << std::endl;
         }
     }
+#else
+	XGR_FULL_SCREEN = true;
+	std::ofstream flog("ux0:data/vangers.log");
+	if (flog.good())
+		std::cout.rdbuf(flog.rdbuf());
+	chdir("ux0:data/Vangers");
+#endif
 
 #if defined(__unix__) || defined(__linux__) || defined(__APPLE__)
 	std::cout<<"Set locale. ";
@@ -240,6 +248,10 @@ int main(int argc, char *argv[])
 
 #ifdef _RTO_LOG_
 	xtRTO_Log.close();
+#endif
+
+#ifdef __VITA__
+	flog.close();
 #endif
 	return 0;
 }

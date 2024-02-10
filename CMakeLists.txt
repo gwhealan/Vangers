@@ -1,11 +1,27 @@
 SET(CMAKE_OSX_DEPLOYMENT_TARGET "10.12" CACHE STRING "Minimum OS X deployment version")
 CMAKE_MINIMUM_REQUIRED(VERSION 3.1.0)
 
+option(VITA "Build for PsVita" OFF)
+
+if (VITA)
+	if (DEFINED ENV{VITASDK})
+		set(CMAKE_TOOLCHAIN_FILE "$ENV{VITASDK}/share/vita.toolchain.cmake" CACHE PATH "toolchain file")
+	else()
+		message(FATAL_ERROR "Please define VITASDK to point to your SDK path!")
+	endif()
+endif()
+
 # root
 PROJECT(vangers)
 
-# modules
-SET(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
+if (VITA)
+	include("vita/setup.cmake")
+	set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/vita/cmake)
+	add_compile_definitions(__VITA__ _GNU_SOURCE)
+else()
+	# modules
+	SET(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
+endif()
 
 # options
 OPTION(BINARY_SCRIPT "Use binary script for interface" ON)
@@ -118,7 +134,7 @@ ADD_SUBDIRECTORY("lib/xgraph")
 ADD_SUBDIRECTORY("lib/xsound")
 ADD_SUBDIRECTORY("lib/xtool")
 
-if(NOT ANDROID)
+if(NOT ((DEFINED ANDROID) OR (DEFINED VITA)))
 	ADD_SUBDIRECTORY("lib/utils")
 	ADD_SUBDIRECTORY("server")
 	ADD_SUBDIRECTORY("surmap")

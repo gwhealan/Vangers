@@ -261,7 +261,7 @@ void ivrtMap::analyzeINI(const char* name)
 	iniparser_freedict(dict_name);
 }
 
-#if (defined(__unix__) || defined(__APPLE__))
+#if (defined(__unix__) || defined(__APPLE__) || defined(__VITA__))
 #define _MAX_DIR   800
 #define _MAX_DRIVE   5
 #define _MAX_EXT   35
